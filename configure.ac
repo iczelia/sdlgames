@@ -1,5 +1,5 @@
 AC_PREREQ([2.71])
-AC_INIT([sdlgames], [1.0], [kspalaiologos@gmail.com])
+AC_INIT([sdlgames], [1.0], [k@iczelia.net])
 AC_CONFIG_SRCDIR([.])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])
