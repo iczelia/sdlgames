@@ -1,6 +1,8 @@
 
 #include "ui.h"
 
+#include "mt19937.h"
+
 #include "asset/assets.h"
 
 SDL_Window * window;
@@ -52,12 +54,12 @@ void render_fireworks() {
 
     // Generate a random bright color.
     SDL_Color color;
-    color.r = rand() % 127 + 128;
-    color.g = rand() % 127 + 128;
-    color.b = rand() % 127 + 128;
+    color.r = genrand() % 127 + 128;
+    color.g = genrand() % 127 + 128;
+    color.b = genrand() % 127 + 128;
     color.a = 255;
 
-    int x = rand() % (WIN_WIDTH / 2) + (WIN_WIDTH / 4);
+    int x = genrand() % (WIN_WIDTH / 2) + (WIN_WIDTH / 4);
     int y = WIN_HEIGHT - 1;
 
     struct firework fw = { color, 0, 0, x, y };
@@ -97,30 +99,30 @@ void tick_fireworks(uint64_t ticks) {
         struct firework * fw = &fireworks[i];
         if (fw->yvel > 0 && fw->isrocket) {
             // Generate a bunch of smaller fireworks going in random directions.
-            int number = rand() % 50 + 50;
+            int number = genrand() % 50 + 50;
             for (int j = 0; j < number; j++) {
                 struct firework fw2 = { fw->color, 0, 0, fw->x, fw->y };
 
                 // Random velocities.
-                fw2.xvel = (rand() % 1000 - 500) / 1000.0f;
-                fw2.yvel = (rand() % 1000 - 500) / 1000.0f;
+                fw2.xvel = (genrand() % 1000 - 500) / 1000.0f;
+                fw2.yvel = (genrand() % 1000 - 500) / 1000.0f;
                 fw2.xvel /= 5.0f;
                 fw2.yvel /= 5.0f;
-                fw2.lifetime = rand() % 900 + 900;
+                fw2.lifetime = genrand() % 900 + 900;
 
                 fw2.color.r -= 32;
                 fw2.color.g -= 32;
                 fw2.color.b -= 32;
 
-                switch (rand() % 3) {
+                switch (genrand() % 3) {
                     case 0:
-                        fw2.color.r += rand() % 32;
+                        fw2.color.r += genrand() % 32;
                         break;
                     case 1:
-                        fw2.color.g += rand() % 32;
+                        fw2.color.g += genrand() % 32;
                         break;
                     case 2:
-                        fw2.color.b += rand() % 32;
+                        fw2.color.b += genrand() % 32;
                         break;
                 }
 
@@ -278,7 +280,7 @@ int create_window() {
 
     SDL_SetWindowIcon(window, SDL_LoadBMP_RW(SDL_RWFromConstMem(sol_bmp, sizeof(sol_bmp)), 1));
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
     if (renderer == NULL) {
         fprintf(stderr, "Unable to create renderer: %s\n", SDL_GetError());
         return 1;

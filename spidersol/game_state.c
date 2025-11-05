@@ -3,6 +3,8 @@
 
 #include "undo.h"
 
+#include "mt19937.h"
+
 #include <stdio.h>
 
 static char * fs_name() { return "solitaire.dat"; }
@@ -16,7 +18,7 @@ struct game_data game = { .remainingExtraDeals = 5,
                           .state = STATE_GAME_DEAL };
 
 void reset_game() {
-    srand(game.lastseed);
+    sgenrand(game.lastseed);
     for (int i = 0; i < 8; i++) game.wonKings[i] = -1;
     for (int i = 0; i < 10; i++) {
         game.stacks[i].num_cards = 0;

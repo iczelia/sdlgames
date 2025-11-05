@@ -5,6 +5,8 @@
 #include "undo.h"
 #include "win.h"
 
+#include "mt19937.h"
+
 static int dealX, dealY, row_dealt;
 
 static void shuffle_card(int * dsuit, int * dvalue) {
@@ -13,8 +15,8 @@ static void shuffle_card(int * dsuit, int * dvalue) {
     if (game.difficulty == 3) {
         // Four suits.
         for (;;) {
-            suit = rand() % 4;
-            value = rand() % 13;
+            suit = genrand() % 4;
+            value = (genrand() >> 7) % 13;
             if (game.counts[suit][value] < 2) {
                 game.counts[suit][value]++;
                 break;
@@ -23,8 +25,8 @@ static void shuffle_card(int * dsuit, int * dvalue) {
     } else if (game.difficulty == 2) {
         // Two suits: need to be careful. Suit must be either 1 or 2, we're simulating 4 decks.
         for (;;) {
-            suit = (rand() % 2) + 1;
-            value = rand() % 13;
+            suit = (genrand() % 2) + 1;
+            value = (genrand() >> 7) % 13;
             if (game.counts[suit][value] < 4) {
                 game.counts[suit][value]++;
                 break;
@@ -34,7 +36,7 @@ static void shuffle_card(int * dsuit, int * dvalue) {
         // One suit: Suit must be 3, we're simulating 8 decks.
         for (;;) {
             suit = 3;
-            value = rand() % 13;
+            value = (genrand() >> 7) % 13;
             if (game.counts[suit][value] < 8) {
                 game.counts[suit][value]++;
                 break;
