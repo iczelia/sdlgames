@@ -16,7 +16,7 @@ static void shuffle_card(int * dsuit, int * dvalue) {
         // Four suits.
         for (;;) {
             suit = genrand() % 4;
-            while (value == card0 || value == card1) value = (genrand() >> 7) % 13;
+            do value = (genrand() >> 7) % 13; while (value == card0 || value == card1);
             card1 = card0; card0 = value;
             if (game.counts[suit][value] < 2) {
                 game.counts[suit][value]++;
@@ -27,7 +27,7 @@ static void shuffle_card(int * dsuit, int * dvalue) {
         // Two suits: need to be careful. Suit must be either 1 or 2, we're simulating 4 decks.
         for (;;) {
             suit = (genrand() % 2) + 1;
-            while (value == card0 || value == card1) value = (genrand() >> 7) % 13;
+            do value = (genrand() >> 7) % 13; while (value == card0 || value == card1);
             card1 = card0; card0 = value;
             if (game.counts[suit][value] < 4) {
                 game.counts[suit][value]++;
@@ -38,7 +38,7 @@ static void shuffle_card(int * dsuit, int * dvalue) {
         // One suit: Suit must be 3, we're simulating 8 decks.
         for (;;) {
             suit = 3;
-            while (value == card0 || value == card1) value = (genrand() >> 7) % 13;
+            do value = (genrand() >> 7) % 13; while (value == card0 || value == card1);
             card1 = card0; card0 = value;
             if (game.counts[suit][value] < 8) {
                 game.counts[suit][value]++;
